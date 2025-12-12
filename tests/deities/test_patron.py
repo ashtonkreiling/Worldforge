@@ -3,20 +3,20 @@ from unittest.mock import patch, MagicMock
 import sys
 import os
 
-# Add project root to path to import turns.patron
+# Add project root to path to import deities.patron
 project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 if project_root not in sys.path:
     sys.path.insert(0, project_root)
 
-from turns.patron import take_turn
+from deities.patron import Patron
 
 
 class TestPatronTurn(unittest.TestCase):
     
-    @patch('turns.patron.roll_random_event')
-    @patch('turns.patron.ask_religion_question')
-    @patch('turns.patron.ask_cultural_question')
-    @patch('turns.patron.grow_settlement')
+    @patch('deities.patron.roll_random_event')
+    @patch('deities.patron.ask_religion_question')
+    @patch('deities.patron.ask_cultural_question')
+    @patch('deities.patron.grow_settlement')
     @patch('builtins.input')
     @patch('builtins.print')
     def test_take_turn_calls_all_functions(self, mock_print, mock_input, mock_grow_settlement, 
@@ -30,8 +30,9 @@ class TestPatronTurn(unittest.TestCase):
         mock_roll_random_event.return_value = "Test random event"
         mock_input.return_value = ""  # Simulate user pressing Enter
         
-        # Call take_turn
-        take_turn()
+        # Create a Patron instance and call take_turn
+        patron = Patron()
+        patron.take_turn()
         
         # Verify all functions were called
         mock_grow_settlement.assert_called_once()
@@ -46,10 +47,10 @@ class TestPatronTurn(unittest.TestCase):
         # Should be called for: settlement status, cultural question, religion question, random event
         self.assertGreaterEqual(mock_print.call_count, 4)
     
-    @patch('turns.patron.roll_random_event')
-    @patch('turns.patron.ask_religion_question')
-    @patch('turns.patron.ask_cultural_question')
-    @patch('turns.patron.grow_settlement')
+    @patch('deities.patron.roll_random_event')
+    @patch('deities.patron.ask_religion_question')
+    @patch('deities.patron.ask_cultural_question')
+    @patch('deities.patron.grow_settlement')
     @patch('builtins.input')
     @patch('builtins.print')
     def test_take_turn_calls_functions_in_order(self, mock_print, mock_input, mock_grow_settlement,
@@ -62,7 +63,9 @@ class TestPatronTurn(unittest.TestCase):
         mock_roll_random_event.return_value = "Random event"
         mock_input.return_value = ""
         
-        take_turn()
+        # Create a Patron instance and call take_turn
+        patron = Patron()
+        patron.take_turn()
         
         # Check the order of calls
         calls = [call[0] for call in mock_grow_settlement.call_args_list + 
@@ -82,4 +85,3 @@ class TestPatronTurn(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-
