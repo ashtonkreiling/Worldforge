@@ -5,7 +5,7 @@ import os
 # Add parent directory to path to import settlement_growth_roller
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from settlement_growth_roller import determine_growth
+from rollers.settlement_growth_roller import determine_growth
 
 
 class TestDetermineGrowth(unittest.TestCase):
