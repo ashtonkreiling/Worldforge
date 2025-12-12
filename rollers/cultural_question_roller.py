@@ -1,6 +1,5 @@
 import random
 
-
 CULTURAL_QUESTIONS = [
     "What is a major holiday the people celebrate, and what event does it commemorate?",
     "What moral value does the community consider most important?",

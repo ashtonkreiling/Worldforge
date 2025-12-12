@@ -1,6 +1,5 @@
 import random
 
-
 RANDOM_EVENTS = [
     "A traveling merchant caravan arrives with rare goods and unusual news.",
     "An outbreak of sickness spreads through the settlement.",

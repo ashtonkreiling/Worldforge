@@ -1,6 +1,5 @@
 import random
 
-
 RELIGION_QUESTIONS = [
     "What is the dominant belief system followed by the people?",
     "What is the origin story of the world according to local faith?",
