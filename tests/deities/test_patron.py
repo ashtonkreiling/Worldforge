@@ -46,6 +46,11 @@ class TestPatronTurn(unittest.TestCase):
         # Verify print was called for each output
         # Should be called for: settlement status, cultural question, religion question, random event
         self.assertGreaterEqual(mock_print.call_count, 4)
+        
+        # Verify increment_power was called (power should have increased)
+        # Since we can't easily mock increment_power without mocking random, we check the power increased
+        # The default power is 4, and increment_power adds 2d6 (2-12), so power should be >= 6
+        self.assertGreaterEqual(patron.power, 6)
     
     @patch('deities.patron.roll_random_event')
     @patch('deities.patron.ask_religion_question')
@@ -65,6 +70,7 @@ class TestPatronTurn(unittest.TestCase):
         
         # Create a Patron instance and call take_turn
         patron = Patron()
+        initial_power = patron.power
         patron.take_turn()
         
         # Check the order of calls
@@ -79,8 +85,32 @@ class TestPatronTurn(unittest.TestCase):
         self.assertTrue(mock_ask_cultural_question.called)
         # Verify ask_religion_question is called after ask_cultural_question
         self.assertTrue(mock_ask_religion_question.called)
-        # Verify roll_random_event is called last
+        # Verify roll_random_event is called after ask_religion_question
         self.assertTrue(mock_roll_random_event.called)
+        # Verify increment_power is called last (power should have increased)
+        self.assertGreater(patron.power, initial_power)
+
+
+    @patch('deities.deity.random.randint')
+    def test_increment_power_adds_2d6_to_power(self, mock_randint):
+        """Test that increment_power rolls 2d6 and adds the result to power."""
+        # Mock the two dice rolls to return known values
+        mock_randint.side_effect = [3, 4]  # First roll returns 3, second returns 4
+        
+        # Create a Patron with known initial power
+        patron = Patron("TestPatron", 10)
+        initial_power = patron.power
+        
+        # Call increment_power
+        patron.increment_power()
+        
+        # Verify random.randint was called twice with arguments (1, 6)
+        self.assertEqual(mock_randint.call_count, 2)
+        mock_randint.assert_any_call(1, 6)
+        
+        # Verify power increased by 7 (3 + 4)
+        self.assertEqual(patron.power, initial_power + 7)
+        self.assertEqual(patron.power, 17)
 
 
 if __name__ == '__main__':

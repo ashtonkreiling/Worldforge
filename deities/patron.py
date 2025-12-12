@@ -14,6 +14,7 @@ class Patron(Deity):
         self.handle_cultural_question()
         self.handle_religion_question()
         self.handle_random_event()
+        self.increment_power()
     
     def handle_settlement_growth(self):
         result = grow_settlement()
