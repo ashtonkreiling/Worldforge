@@ -1,14 +1,14 @@
 import random
 
+SETTLEMENT_GROWTH_VALUES = [-1, 0, 0, 0, 1, 1]
+
 def grow_settlement():
-    roll = random.randint(1, 6)
+    roll = random.randint(0, 5)
     return determine_growth(roll)
 
 
 def determine_growth(roll):
-    if roll == 1:
-        return -1  # Settlement shrinks
-    elif roll in [2, 3, 4]:
-        return 0   # Settlement stays the same
-    else:  # roll is 5 or 6
-        return 1   # Settlement grows
+    if 0 <= roll <= 5:
+        return SETTLEMENT_GROWTH_VALUES[roll]
+    else:
+        raise ValueError(f"Roll must be between 0 and 5, got {roll}")
