@@ -2,8 +2,10 @@ import unittest
 import sys
 import os
 
-# Add parent directory to path to import cultural_question_roller
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# Add project root to path to import rollers
+project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+if project_root not in sys.path:
+    sys.path.insert(0, project_root)
 
 from rollers.cultural_question_roller import determine_question, CULTURAL_QUESTIONS
 
