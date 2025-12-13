@@ -112,6 +112,27 @@ class TestPatronTurn(unittest.TestCase):
         self.assertEqual(patron.power, initial_power + 7)
         self.assertEqual(patron.power, 17)
 
+    @patch('deities.deity.random.randint')
+    def test_increment_power_boosts_power_by_4_when_less_than_4(self, mock_randint):
+        """Test that increment_power rolls 2d6 and adds the result to power."""
+        # Mock the two dice rolls to return known values
+        mock_randint.side_effect = [3, 4]  # First roll returns 3, second returns 4
+        
+        # Create a Patron with known initial power
+        patron = Patron("TestPatron", 3)
+        initial_power = patron.power
+        
+        # Call increment_power
+        patron.increment_power()
+        
+        # Verify random.randint was called twice with arguments (1, 6)
+        self.assertEqual(mock_randint.call_count, 2)
+        mock_randint.assert_any_call(1, 6)
+        
+        # Verify power increased by 7 (3 + 4)
+        self.assertEqual(patron.power, initial_power + 11)
+        self.assertEqual(patron.power, 14)
+
 
 if __name__ == '__main__':
     unittest.main()

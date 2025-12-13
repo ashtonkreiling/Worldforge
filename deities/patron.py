@@ -3,11 +3,13 @@ from rollers.cultural_question_roller import ask_cultural_question
 from rollers.religion_question_roller import ask_religion_question
 from rollers.random_events_roller import roll_random_event
 from deities.deity import Deity
+from actions.patron_actions import PatronAction
+from actions.patron_actions import PATRON_ACTIONS
 
 
 class Patron(Deity):    
-    def __init__(self, name: str = "Patron", power: int = 4):
-        super().__init__(name, power)
+    def __init__(self, name: str = "Patron", power: int = 4, actions: PatronAction = PATRON_ACTIONS):
+        super().__init__(name, power, actions)
     
     def take_turn(self):
         self.handle_settlement_growth()
@@ -15,6 +17,7 @@ class Patron(Deity):
         self.handle_religion_question()
         self.handle_random_event()
         self.increment_power()
+        self.take_actions()
     
     def handle_settlement_growth(self):
         result = grow_settlement()
