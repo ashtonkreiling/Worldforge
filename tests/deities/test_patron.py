@@ -9,10 +9,12 @@ if project_root not in sys.path:
     sys.path.insert(0, project_root)
 
 from deities.patron import Patron
+from actions.patron_actions import PatronAction
 
 
 class TestPatronTurn(unittest.TestCase):
     
+    @patch('deities.patron.Patron.take_actions')
     @patch('deities.patron.roll_random_event')
     @patch('deities.patron.ask_religion_question')
     @patch('deities.patron.ask_cultural_question')
@@ -21,7 +23,7 @@ class TestPatronTurn(unittest.TestCase):
     @patch('builtins.print')
     def test_take_turn_calls_all_functions(self, mock_print, mock_input, mock_grow_settlement, 
                                            mock_ask_cultural_question, mock_ask_religion_question, 
-                                           mock_roll_random_event):
+                                           mock_roll_random_event, mock_take_actions):
         """Test that take_turn calls all required functions in the correct order."""
         # Set up return values for the mocked functions
         mock_grow_settlement.return_value = 0
@@ -39,6 +41,7 @@ class TestPatronTurn(unittest.TestCase):
         mock_ask_cultural_question.assert_called_once()
         mock_ask_religion_question.assert_called_once()
         mock_roll_random_event.assert_called_once()
+        mock_take_actions.assert_called_once()
         
         # Verify input was called twice (for cultural and religion questions)
         self.assertEqual(mock_input.call_count, 2)
@@ -52,6 +55,7 @@ class TestPatronTurn(unittest.TestCase):
         # The default power is 4, and increment_power adds 2d6 (2-12), so power should be >= 6
         self.assertGreaterEqual(patron.power, 6)
     
+    @patch('deities.patron.Patron.take_actions')
     @patch('deities.patron.roll_random_event')
     @patch('deities.patron.ask_religion_question')
     @patch('deities.patron.ask_cultural_question')
@@ -60,7 +64,7 @@ class TestPatronTurn(unittest.TestCase):
     @patch('builtins.print')
     def test_take_turn_calls_functions_in_order(self, mock_print, mock_input, mock_grow_settlement,
                                                  mock_ask_cultural_question, mock_ask_religion_question,
-                                                 mock_roll_random_event):
+                                                 mock_roll_random_event, mock_take_actions):
         """Test that take_turn calls functions in the correct order."""
         mock_grow_settlement.return_value = 1
         mock_ask_cultural_question.return_value = "Cultural question"
@@ -77,7 +81,8 @@ class TestPatronTurn(unittest.TestCase):
         calls = [call[0] for call in mock_grow_settlement.call_args_list + 
                  mock_ask_cultural_question.call_args_list +
                  mock_ask_religion_question.call_args_list +
-                 mock_roll_random_event.call_args_list]
+                 mock_roll_random_event.call_args_list +
+                 mock_take_actions.call_args_list]
         
         # Verify grow_settlement is called first
         self.assertTrue(mock_grow_settlement.called)
@@ -89,6 +94,7 @@ class TestPatronTurn(unittest.TestCase):
         self.assertTrue(mock_roll_random_event.called)
         # Verify increment_power is called last (power should have increased)
         self.assertGreater(patron.power, initial_power)
+        self.assertTrue(mock_take_actions.called)
 
 
     @patch('deities.deity.random.randint')
@@ -132,6 +138,50 @@ class TestPatronTurn(unittest.TestCase):
         # Verify power increased by 7 (3 + 4)
         self.assertEqual(patron.power, initial_power + 11)
         self.assertEqual(patron.power, 14)
+
+    @patch('builtins.input')
+    def test_take_actions_numeric_selection_deducts_power(self, mock_input):
+        rest_action = PatronAction("Rest", 0)
+        attack_action = PatronAction("Attack", 2)
+
+        deity = Patron(power=4, actions=[attack_action, rest_action])
+
+        # First input selects Attack, second selects Rest to exit
+        mock_input.side_effect = ["0", "Rest"]
+
+        deity.take_actions()
+
+        self.assertEqual(deity.power, 2)
+
+    @patch('builtins.input')
+    def test_take_actions_string_selection_case_insensitive(self, mock_input):
+        rest_action = PatronAction("Rest", 0)
+        heal_action = PatronAction("Heal", 1)
+
+        deity = Patron(power=3, actions=[heal_action, rest_action])
+
+        mock_input.side_effect = ["hEaL", "rest"]
+
+        deity.take_actions()
+
+        self.assertEqual(deity.power, 2)
+
+    @patch('builtins.input')
+    @patch('builtins.print')
+    def test_take_actions_rejects_expensive_action(self, mock_print, mock_input):
+        expensive_action = PatronAction("Smite", 10)
+        rest_action = PatronAction("Rest", 0)
+
+        deity = Patron(power=3, actions=[expensive_action, rest_action])
+
+        mock_input.side_effect = ["Smite", "Rest"]
+
+        deity.take_actions()
+
+        self.assertEqual(deity.power, 3)
+        mock_print.assert_any_call("That action is too expensive for the power you have left")
+
+
 
 
 if __name__ == '__main__':
