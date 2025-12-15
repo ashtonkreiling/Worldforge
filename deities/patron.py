@@ -8,7 +8,7 @@ from actions.patron_actions import PATRON_ACTIONS
 
 
 class Patron(Deity):    
-    def __init__(self, name: str = "Patron", power: int = 4, actions: PatronAction = PATRON_ACTIONS):
+    def __init__(self, name: str = "Patron", power: int = 4, actions: list[PatronAction] = PATRON_ACTIONS):
         super().__init__(name, power, actions)
     
     def take_turn(self):
