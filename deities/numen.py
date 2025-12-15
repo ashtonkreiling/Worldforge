@@ -1,9 +1,9 @@
 from deities.deity import Deity
-from actions.sovereign_actions import SovereignAction
-from actions.sovereign_actions import SOVEREIGN_ACTIONS
+from actions.numen_actions import NumenAction
+from actions.numen_actions import NUMEN_ACTIONS
 
-class Sovereign(Deity):
-    def __init__(self, name: str = "Sovereign", power: int = 4, actions: list[SovereignAction] = SOVEREIGN_ACTIONS):
+class Numen(Deity):
+    def __init__(self, name: str = "Sovereign", power: int = 4, actions: list[NumenAction] = NUMEN_ACTIONS):
         super().__init__(name, power, actions)
 
     def take_turn(self):
