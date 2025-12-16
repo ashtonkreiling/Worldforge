@@ -17,15 +17,16 @@ class Deity(ABC):
         for question in questions:
             print(question)
             answer = input()
-            description += """
-            {question}
-            {answer}
-            """
+            description += f"{question}\n{answer}\n"
         return description
     
     @abstractmethod
     def take_turn(self):
         pass
+
+    def to_text(self):
+        print(f"Name: {self.name}")
+        print(self.description)
     
     def increment_power(self):
         if self.power < 4:
