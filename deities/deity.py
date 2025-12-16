@@ -6,10 +6,22 @@ import random
 
 class Deity(ABC):
     
-    def __init__(self, name: str, power: int, actions: list[Action]):
+    def __init__(self, name: str, power: int, actions: list[Action], questions: list[str]):
         self.name = name
         self.power = power
+        self.description = self.generate_description(questions)
         self.actions = actions
+
+    def generate_description(self, questions):
+        description = ""
+        for question in questions:
+            print(question)
+            answer = input()
+            description += """
+            {question}
+            {answer}
+            """
+        return description
     
     @abstractmethod
     def take_turn(self):

@@ -9,7 +9,8 @@ from actions.patron_actions import PATRON_ACTIONS
 
 class Patron(Deity):    
     def __init__(self, name: str = "Patron", power: int = 4, actions: list[PatronAction] = PATRON_ACTIONS):
-        super().__init__(name, power, actions)
+        questions = ["Q?"]
+        super().__init__(name, power, actions, questions)
     
     def take_turn(self):
         self.handle_settlement_growth()

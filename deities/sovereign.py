@@ -4,7 +4,8 @@ from actions.sovereign_actions import SOVEREIGN_ACTIONS
 
 class Sovereign(Deity):
     def __init__(self, name: str = "Sovereign", power: int = 4, actions: list[SovereignAction] = SOVEREIGN_ACTIONS):
-        super().__init__(name, power, actions)
+        questions = ["Q?"]
+        super().__init__(name, power, actions, questions)
 
     def take_turn(self):
         self.increment_power()
