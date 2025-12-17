@@ -8,8 +8,18 @@ from actions.patron_actions import PATRON_ACTIONS
 
 
 class Patron(Deity):    
-    def __init__(self, name: str = "Patron", power: int = 4, actions: list[PatronAction] = PATRON_ACTIONS):
-        questions = ["Q?"]
+    def __init__(self, name: str = "Patron", charge: str = "", power: int = 4, actions: list[PatronAction] = PATRON_ACTIONS):
+        questions = [
+            "How does this Patron appear when communicating with mortals?",
+            "What goals does this Patron have?",
+            "What character strengths and weaknesses does this Patron have?",
+            "What symbols represent this Patron?",
+            "Does this Patron live up to the ideal of its species' Sovereign?",
+            "How does this Patron feel about its species' Sovereign?",
+            "What relationship does this Patron have with other Patrons in the surrounding area?",
+            "Are there holy sites dedicated to this Patron? What are they like?",
+        ]
+        self.charge = charge
         super().__init__(name, power, actions, questions)
     
     def take_turn(self):
