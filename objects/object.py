@@ -1,11 +1,13 @@
 from abc import ABC
 from objects.tag import Tag
+from utils.name_to_filename import to_filename
 
 class Object(ABC):
     def __init__(self, name: str, description: str):
         self.name = name
         self.description = description
         self.tags = self.add_tags()
+        self.file_path = to_filename(name)
 
     def add_tags(self):
         tags = []

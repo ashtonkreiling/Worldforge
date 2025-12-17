@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from actions.action import Action
 import random
+from utils.name_to_filename import to_filename
 
 
 
@@ -11,6 +12,7 @@ class Deity(ABC):
         self.power = power
         self.description = self.generate_description(questions)
         self.actions = actions
+        self.file_path = to_filename(name)
 
     def generate_description(self, questions):
         description = ""
