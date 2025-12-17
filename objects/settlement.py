@@ -1,10 +1,12 @@
+from objects.object import Object
 from objects.project import Project
 from objects.advantage import Advantage
 from objects.tag import Tag
 from objects.artifact import Artifact
 from objects.hero import Hero
+from objects.faction import Faction
 
-class Settlement:
+class Settlement(Object):
     def __init__(
             self,
             name: str,
@@ -15,12 +17,12 @@ class Settlement:
             tags: list[Tag],
             artifacts: list[Artifact],
             heros: list[Hero],
+            factions: list[Faction],
         ):
-        self.name = name
-        self.description = description
         self.inhabitants = inhabitants
         self.projects = projects
         self.advantages = advantages
-        self.tags = tags
         self.artifacts = artifacts
         self.heros = heros
+        self.factions = factions
+        super.__init__(name, description, tags)
