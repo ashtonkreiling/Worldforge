@@ -1,8 +1,8 @@
-from deities.deity import Deity
+from deities.lesser_deity import LesserDeity
 from actions.sovereign_actions import SovereignAction
 from actions.sovereign_actions import SOVEREIGN_ACTIONS
 
-class Sovereign(Deity):
+class Sovereign(LesserDeity):
     def __init__(self, name: str = "Sovereign", charge: str = "", power: int = 4, actions: list[SovereignAction] = SOVEREIGN_ACTIONS):
         questions = [
             "How does this Sovereign appear to their followers?",
@@ -18,7 +18,7 @@ class Sovereign(Deity):
             "If this Sovereign were a character in a story, how would you describe their temperament or role (mentor, judge, trickster, tyrant, guide, etc.)?"
         ]
         self.charge = charge
-        super().__init__(name, power, actions, questions)
+        super().__init__(name, charge, power, actions, questions)
 
     def take_turn(self):
         self.increment_power()
