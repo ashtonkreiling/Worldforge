@@ -12,7 +12,7 @@ class Object(ABC):
     def add_tags(self):
         tags = []
         while True:
-            print("Add a new tag or type 'skip' to skip")
+            print(f"Add a new tag to {self.name} or type 'skip' to skip")
             tag = input()
             if tag == "skip":
                 break
