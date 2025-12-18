@@ -7,8 +7,8 @@ from objects.settlement import Settlement
 class Hex:
     def __init__(
             self,
-            x: int,
-            y: int,
+            q: int,
+            r: int,
             height: int,
             terrain: str,
             resources: list[Resource],
@@ -17,8 +17,8 @@ class Hex:
             leviathans: list[Leviathan],
             artifacts: list[Artifact]
         ):
-        self.x = x
-        self.y = y
+        self.q = q
+        self.r = r
         self.height = height
         self.terrain = terrain
         self.resources = resources
