@@ -13,13 +13,13 @@ class Numen(LesserDeity):
             "How does this Numen relate to other spirits nearby, or to the Patron or Sovereign above it?",
             "What symbols, charms, or tokens represent this Numen?"
         ]
-        self.charge = self.create_charge()
-        super().__init__(name, self.charge, power, actions, questions)
+        charge = self.create_charge()
+        super().__init__(name, charge, power, actions, questions)
 
     def create_charge(self):
         print("What is the name of the faction that is this Numen's charge?")
         name = input()
-        print("Describe the faction that is this Numen's charge?")
+        print("Describe the faction that is this Numen's charge")
         description = input()
         return Faction(name, description)
 

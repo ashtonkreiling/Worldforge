@@ -5,10 +5,12 @@ from rollers.random_events_roller import roll_random_event
 from deities.lesser_deity import LesserDeity
 from actions.patron_actions import PatronAction
 from actions.patron_actions import PATRON_ACTIONS
-
+from objects.settlement import Settlement
+from objects.sentient import Sentient
+import random
 
 class Patron(LesserDeity):    
-    def __init__(self, name: str = "Patron", charge: str = "", power: int = 4, actions: list[PatronAction] = PATRON_ACTIONS):
+    def __init__(self, name: str, species: Sentient, power: int = 4, actions: list[PatronAction] = PATRON_ACTIONS):
         questions = [
             "How does this Patron appear when communicating with mortals?",
             "What goals does this Patron have?",
@@ -19,9 +21,19 @@ class Patron(LesserDeity):
             "What relationship does this Patron have with other Patrons in the surrounding area?",
             "Are there holy sites dedicated to this Patron? What are they like?",
         ]
-        self.charge = charge
+        charge = self.create_charge(species)
         super().__init__(name, charge, power, actions, questions)
     
+    def create_charge(self, species):
+        # name, description, inhabitants
+        print("What is the name of the settlement that is this Patron's charge?")
+        name = input()
+        print("Describe the settlement that is this Patron's charge")
+        description = input()
+        inhabitants = {species.name: random.randint(40, 80)}
+        return Settlement(name, description, inhabitants)
+
+
     def take_turn(self):
         self.handle_settlement_growth()
         self.handle_cultural_question()

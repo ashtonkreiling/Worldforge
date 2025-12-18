@@ -10,7 +10,7 @@ class Object(ABC):
         self.file_path = to_filename(name)
 
     def add_tags(self):
-        tags = []
+        tags = [Tag(self.name.lower())]
         while True:
             print(f"Add a new tag to {self.name} or type 'skip' to skip")
             tag = input()
