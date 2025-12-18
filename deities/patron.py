@@ -3,14 +3,14 @@ from rollers.cultural_question_roller import ask_cultural_question
 from rollers.religion_question_roller import ask_religion_question
 from rollers.random_events_roller import roll_random_event
 from deities.lesser_deity import LesserDeity
-from actions.patron_actions import PatronAction
+from actions.action import Action
 from actions.patron_actions import PATRON_ACTIONS
 from objects.settlement import Settlement
 from objects.sentient import Sentient
 import random
 
 class Patron(LesserDeity):    
-    def __init__(self, name: str, species: Sentient, power: int = 4, actions: list[PatronAction] = PATRON_ACTIONS):
+    def __init__(self, name: str, species: Sentient, power: int = 4, actions: list[Action] = PATRON_ACTIONS):
         questions = [
             "How does this Patron appear when communicating with mortals?",
             "What goals does this Patron have?",

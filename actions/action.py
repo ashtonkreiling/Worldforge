@@ -1,14 +1,11 @@
-from abc import ABC, abstractmethod
-
-class Action(ABC):
+class Action:
 
     def __init__(self, name: str, cost: int):
         self.name = name
         self.cost = cost
 
-    @abstractmethod
     def take_action(self):
-        pass
+        return self.cost
 
     def to_text(self):
         print(f"| {self.name:<30} | {self.cost:>2} |")

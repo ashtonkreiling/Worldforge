@@ -1,20 +1,16 @@
 from actions.action import Action
 
-class PrimordialAction(Action):
-    def take_action(self):
-        return self.cost
-
 PRIMORDIAL_ACTIONS = [
-    PrimordialAction("Rest", 0),
-    PrimordialAction("Raise/Lower Land (9 Hexes)", 8),
-    PrimordialAction("Shape Land (1 Hex)", 1),
-    PrimordialAction("Add Resource", 1),
-    PrimordialAction("Create Creature", 1),
-    PrimordialAction("Create Leviathan", 10),
-    PrimordialAction("Create Sentient Species", 10),
-    PrimordialAction("Uplift Creature", 8),
-    PrimordialAction("Create Subrace", 5),
-    PrimordialAction("Catastrophe", 5),
-    PrimordialAction("Bind Other Primordial", 8),
-    PrimordialAction("Command Leviathan", 2)
+    Action("Rest", 0),
+    Action("Raise/Lower Land (9 Hexes)", 8),
+    Action("Shape Land (1 Hex)", 1),
+    Action("Add Resource", 1),
+    Action("Create Creature", 1),
+    Action("Create Leviathan", 10),
+    Action("Create Sentient Species", 10),
+    Action("Uplift Creature", 8),
+    Action("Create Subrace", 5),
+    Action("Catastrophe", 5),
+    Action("Bind Other Primordial", 8),
+    Action("Command Leviathan", 2)
 ]

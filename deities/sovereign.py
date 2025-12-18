@@ -1,9 +1,9 @@
 from deities.lesser_deity import LesserDeity
-from actions.sovereign_actions import SovereignAction
+from actions.action import Action
 from actions.sovereign_actions import SOVEREIGN_ACTIONS
 
 class Sovereign(LesserDeity):
-    def __init__(self, name: str = "Sovereign", charge: str = "", power: int = 4, actions: list[SovereignAction] = SOVEREIGN_ACTIONS):
+    def __init__(self, name: str = "Sovereign", charge: str = "", power: int = 4, actions: list[Action] = SOVEREIGN_ACTIONS):
         questions = [
             "How does this Sovereign appear to their followers?",
             "What goals and machinations does this Sovereign have?",

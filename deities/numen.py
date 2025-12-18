@@ -1,10 +1,10 @@
 from deities.lesser_deity import LesserDeity
-from actions.numen_actions import NumenAction
+from actions.action import Action
 from actions.numen_actions import NUMEN_ACTIONS
 from objects.faction import Faction
 
 class Numen(LesserDeity):
-    def __init__(self, name: str = "Numen", power: int = 4, actions: list[NumenAction] = NUMEN_ACTIONS):
+    def __init__(self, name: str = "Numen", power: int = 4, actions: list[Action] = NUMEN_ACTIONS):
         questions = [
             "How does this Numen appear to mortals when it chooses to be seen?",
             "What mood or personality does this Numen have?",

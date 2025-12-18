@@ -1,9 +1,9 @@
 from deities.deity import Deity
-from actions.primordial_actions import PrimordialAction
+from actions.action import Action
 from actions.primordial_actions import PRIMORDIAL_ACTIONS
 
 class Primordial(Deity):
-    def __init__(self, name: str = "Primordial", power: int = 4, actions: list[PrimordialAction] = PRIMORDIAL_ACTIONS):
+    def __init__(self, name: str = "Primordial", power: int = 4, actions: list[Action] = PRIMORDIAL_ACTIONS):
         questions = [
             "What is the appearance of this Primordial when viewed by an observer?",
             "When this Primordial moves, acts, or rests, how does the world react?",
