@@ -5,6 +5,7 @@ from objects.tag import Tag
 from objects.artifact import Artifact
 from objects.hero import Hero
 from objects.faction import Faction
+from objects.technology import Technology
 
 class Settlement(Object):
     def __init__(
@@ -18,6 +19,7 @@ class Settlement(Object):
             artifacts: list[Artifact],
             heros: list[Hero],
             factions: list[Faction],
+            technologies: list[Technology],
         ):
         self.inhabitants = inhabitants
         self.projects = projects
@@ -25,4 +27,5 @@ class Settlement(Object):
         self.artifacts = artifacts
         self.heros = heros
         self.factions = factions
+        self.technologies = technologies
         super.__init__(name, description, tags)
