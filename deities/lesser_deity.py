@@ -9,7 +9,7 @@ class LesserDeity(Deity):
 
     def to_text(self):
         print(f"Name: {self.name}")
-        print("Charge ---------------------")
+        print("-----------Charge-----------")
         self.charge.to_text()
         print("----------------------------")
         print(self.description)
