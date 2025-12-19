@@ -1,4 +1,5 @@
 from objects.object import Object
 
 class Resource(Object):
-    super
+    def attach_to(self, parent):
+        parent.resources.append(self)

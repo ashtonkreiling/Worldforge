@@ -1,4 +1,4 @@
-from abc import ABC
+from abc import ABC, abstractmethod
 from objects.tag import Tag
 from utils.name_to_filename import to_filename
 
@@ -8,6 +8,10 @@ class Object(ABC):
         self.description = description
         self.tags = self.add_tags()
         self.file_path = to_filename(name)
+
+    @abstractmethod
+    def attach_to(self, parent):
+        pass
 
     def add_tags(self):
         tags = [Tag(self.name.lower())]

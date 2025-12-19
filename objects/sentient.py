@@ -1,4 +1,5 @@
 from objects.object import Object
 
 class Sentient(Object):
-    super
+    def attach_to(self, parent):
+        parent.sentients.append(self)

@@ -1,4 +1,5 @@
 from objects.object import Object
 
 class Hero(Object):
-    super
+    def attach_to(self, parent):
+        parent.heroes.append(self)

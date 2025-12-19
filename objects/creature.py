@@ -1,4 +1,5 @@
 from objects.object import Object
 
 class Creature(Object):
-    super
+    def attach_to(self, parent):
+        parent.creatures.append(self)

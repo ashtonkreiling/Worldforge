@@ -6,3 +6,6 @@ class Relationship:
         self.description = description
         self.first_entity = first_entity
         self.second_entity = second_entity
+
+    def attach_to(self, parent):
+        parent.relationships.append(self)

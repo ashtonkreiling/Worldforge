@@ -1,4 +1,5 @@
 from objects.object import Object
 
 class Leviathan(Object):
-    super
+    def attach_to(self, parent):
+        parent.leviathans.append(self)

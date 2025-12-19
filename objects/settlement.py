@@ -15,7 +15,7 @@ class Settlement(Object):
             projects: list[Project] = None,
             advantages: list[Advantage] = None,
             artifacts: list[Artifact] = None,
-            heros: list[Hero] = None,
+            heroes: list[Hero] = None,
             factions: list[Faction] = None,
             technologies: list[Technology] = None,
         ):
@@ -23,7 +23,7 @@ class Settlement(Object):
         self.projects = projects
         self.advantages = advantages
         self.artifacts = artifacts
-        self.heros = heros
+        self.heroes = heroes
         self.factions = factions
         self.technologies = technologies
         super().__init__(name, description)

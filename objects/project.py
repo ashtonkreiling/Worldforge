@@ -1,4 +1,5 @@
 from objects.object import Object
 
 class Project(Object):
-    super
+    def attach_to(self, parent):
+        parent.projects.append(self)

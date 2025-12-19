@@ -1,5 +1,5 @@
 class ActionContext:
-    def __init__(self, actor, charge, turn):
+    def __init__(self, actor, subject, turn):
         self.actor = actor
-        self.charge = charge
+        self.subject = subject
         self.turn = turn
