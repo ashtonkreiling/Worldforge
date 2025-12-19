@@ -1,6 +1,9 @@
+import random
+
 from actions.effect import Effect
 
 from objects.object import Object
+from objects.settlement import Settlement
 
 class AddHistory(Effect):
     def __init__(self, text_template: str):
@@ -16,7 +19,31 @@ class AddHistory(Effect):
 class AddChildObject(Effect):
     def __init__(self, object: Object):
         self.object = object
-        super().__init__()
 
     def apply(self, context):
         self.object.attach_to(context.subject)
+
+class ResolveBattle(Effect):
+    def __init__(self, attacker, defender):
+        self.attacker = attacker
+        self.defender = defender
+
+    def apply(self, context):
+        attacker_roll = self.roll_2d6() + self.apply_settlement_advantages(self.attacker)
+        defender_roll = self.roll_2d6() + self.apply_settlement_advantages(self.defender)
+        result = self.determine_result(attacker_roll, defender_roll)
+        return super().apply(context)
+    
+    def apply_settlement_advantages(self, settlement):
+        total = settlement.size
+        for advantage in settlement.advantages:
+            for tag in advantage.affected_tags:
+                if tag == "battle":
+                    total += 1
+
+    def roll_2d6(self):
+        return random.randint(1,6) + random.randint(1,6)
+    
+    # Still need to add the victory/loss table and consequences
+    def determine_result(self, attacker_roll, defender_roll):
+        difference = attacker_roll - defender_roll

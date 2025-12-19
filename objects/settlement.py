@@ -26,6 +26,7 @@ class Settlement(Object):
         self.heroes = heroes
         self.factions = factions
         self.technologies = technologies
+        self.size = 1
         super().__init__(name, description)
 
     def to_text(self):
