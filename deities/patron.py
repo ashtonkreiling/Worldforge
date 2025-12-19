@@ -7,6 +7,8 @@ from actions.action import Action
 from actions.patron_actions import PATRON_ACTIONS
 from objects.settlement import Settlement
 from objects.sentient import Sentient
+from utils.prompt_player import prompt_player
+
 import random
 
 class Patron(LesserDeity):    
@@ -25,11 +27,8 @@ class Patron(LesserDeity):
         super().__init__(name, charge, power, actions, questions)
     
     def create_charge(self, species):
-        # name, description, inhabitants
-        print("What is the name of the settlement that is this Patron's charge?")
-        name = input()
-        print("Describe the settlement that is this Patron's charge")
-        description = input()
+        name = prompt_player("What is the name of the settlement that is this Patron's charge?")
+        description = prompt_player("Describe the settlement that is this Patron's charge")
         inhabitants = {species.name: random.randint(40, 80)}
         return Settlement(name, description, inhabitants)
 
@@ -56,13 +55,11 @@ class Patron(LesserDeity):
     
     def handle_cultural_question(self):
         question = ask_cultural_question()
-        print(question)
-        input()  # Wait for user response
+        prompt_player(question)
     
     def handle_religion_question(self):
         question = ask_religion_question()
-        print(question)
-        input()  # Wait for user response
+        prompt_player(question)
     
     def handle_random_event(self):
         event = roll_random_event()

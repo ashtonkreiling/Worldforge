@@ -2,6 +2,7 @@ from deities.lesser_deity import LesserDeity
 from actions.action import Action
 from actions.numen_actions import NUMEN_ACTIONS
 from objects.faction import Faction
+from utils.prompt_player import prompt_player
 
 class Numen(LesserDeity):
     def __init__(self, name: str = "Numen", power: int = 4, actions: list[Action] = NUMEN_ACTIONS):
@@ -17,10 +18,8 @@ class Numen(LesserDeity):
         super().__init__(name, charge, power, actions, questions)
 
     def create_charge(self):
-        print("What is the name of the faction that is this Numen's charge?")
-        name = input()
-        print("Describe the faction that is this Numen's charge")
-        description = input()
+        name = prompt_player("What is the name of the faction that is this Numen's charge?")
+        description = prompt_player("Describe the faction that is this Numen's charge")
         return Faction(name, description)
 
     def take_turn(self):

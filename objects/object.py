@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from objects.tag import Tag
 from utils.name_to_filename import to_filename
+from utils.prompt_player import prompt_player
 
 class Object(ABC):
     def __init__(self, name: str, description: str):
@@ -16,8 +17,7 @@ class Object(ABC):
     def add_tags(self):
         tags = [Tag(self.name.lower())]
         while True:
-            print(f"Add a new tag to {self.name} or type 'skip' to skip")
-            tag = input()
+            tag = prompt_player(f"Add a new tag to {self.name} or type 'skip' to skip")
             if tag == "skip":
                 break
             tags.append(Tag(tag))

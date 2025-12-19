@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from actions.action import Action
 import random
 from utils.name_to_filename import to_filename
+from utils.prompt_player import prompt_player
 
 
 
@@ -17,8 +18,7 @@ class Deity(ABC):
     def generate_description(self, questions):
         description = ""
         for question in questions:
-            print(question)
-            answer = input()
+            answer = prompt_player(question)
             description += f"{question}\n{answer}\n"
         return description
     
