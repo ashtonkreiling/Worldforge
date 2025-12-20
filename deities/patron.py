@@ -27,10 +27,9 @@ class Patron(LesserDeity):
         super().__init__(name, charge, power, actions, questions)
     
     def create_charge(self, species):
-        name = prompt_player("What is the name of the settlement that is this Patron's charge?")
-        description = prompt_player("Describe the settlement that is this Patron's charge")
+        print("Creating the settlement that is this patron's charge")
         inhabitants = {species.name: random.randint(40, 80)}
-        return Settlement(name, description, inhabitants)
+        return Settlement(inhabitants)
 
 
     def take_turn(self):

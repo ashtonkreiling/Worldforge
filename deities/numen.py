@@ -18,9 +18,8 @@ class Numen(LesserDeity):
         super().__init__(name, charge, power, actions, questions)
 
     def create_charge(self):
-        name = prompt_player("What is the name of the faction that is this Numen's charge?")
-        description = prompt_player("Describe the faction that is this Numen's charge")
-        return Faction(name, description)
+        print("Creating the faction that is this numen's charge")
+        return Faction()
 
     def take_turn(self):
         self.increment_power()

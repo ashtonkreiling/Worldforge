@@ -9,8 +9,6 @@ from objects.technology import Technology
 class Settlement(Object):
     def __init__(
             self,
-            name: str,
-            description: str,
             inhabitants: dict[str:int],
             projects: list[Project] = None,
             advantages: list[Advantage] = None,
@@ -27,7 +25,7 @@ class Settlement(Object):
         self.factions = factions
         self.technologies = technologies
         self.size = 1
-        super().__init__(name, description)
+        super().__init__()
 
     def to_text(self):
         print(f"Name: {self.name}")
