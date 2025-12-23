@@ -3,11 +3,11 @@ from actions.action_context import ActionContext
 
 class Action:
 
-    def __init__(self, name: str, cost: int, effects: list[Effect], formatted_name: str = None):
+    def __init__(self, name: str, cost: int, effects: list[Effect], formatted_name: str):
         self.name = name
         self.cost = cost
         self.effects = effects
-        self.formatted_name = formatted_name or name
+        self.formatted_name = formatted_name
 
     def take_action(self, context: ActionContext):
         for effect in self.effects:

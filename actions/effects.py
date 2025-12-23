@@ -3,11 +3,21 @@ import random
 from actions.effect import Effect
 
 from objects.object import Object
-from objects.settlement import Settlement
+from objects.advantage import Advantage
 
 class AddHistory(Effect):
     def apply(self, context):
         context.subject.add_history_entry(context)
+
+class AddBlessing(Effect):
+    def apply(self, context):
+        obj = Advantage(1)
+        obj.attach_to(context.subject)
+
+class AddCurse(Effect):
+    def apply(self, context):
+        obj = Advantage(-1)
+        obj.attach_to(context.subject)
 
 class AddChildObject(Effect):
     def __init__(self, object_klass: type[Object]):

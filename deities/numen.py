@@ -1,5 +1,6 @@
 from deities.lesser_deity import LesserDeity
 from actions.action import Action
+from actions.action_context import ActionContext
 from actions.numen_actions import NUMEN_ACTIONS
 from objects.faction import Faction
 from utils.prompt_player import prompt_player
@@ -24,3 +25,11 @@ class Numen(LesserDeity):
     def take_turn(self):
         self.increment_power()
         self.take_actions()
+
+    def set_context(self, action):
+        return ActionContext(
+            self,
+            action.formatted_name,
+            self.charge,
+            1,
+        )
