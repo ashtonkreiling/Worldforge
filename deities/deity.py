@@ -1,6 +1,9 @@
-from abc import ABC, abstractmethod
-from actions.action import Action
 import random
+from abc import ABC, abstractmethod
+
+from actions.action import Action
+from actions.action_context import ActionContext
+
 from utils.name_to_filename import to_filename
 from utils.prompt_player import prompt_player
 
@@ -52,9 +55,15 @@ class Deity(ABC):
                 return
 
             if selected_action:
-                cost = selected_action.take_action()
+                cost = selected_action.cost
                 if cost <= self.power:
-                    self.power -= cost
+                    context = ActionContext(
+                        self,
+                        selected_action.formatted_name,
+                        self.charge,
+                        1
+                    )
+                    self.power -= selected_action.take_action(context)
                 else:
                     print("That action is too expensive for the power you have left")
 

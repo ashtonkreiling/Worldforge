@@ -10,11 +10,12 @@ class AddHistory(Effect):
         context.subject.add_history_entry(context)
 
 class AddChildObject(Effect):
-    def __init__(self, object: Object):
-        self.object = object
+    def __init__(self, object_klass: type[Object]):
+        self.object_klass = object_klass
 
     def apply(self, context):
-        self.object.attach_to(context.subject)
+        obj = self.object_klass()
+        obj.attach_to(context.subject)
 
 class ResolveBattle(Effect):
     def __init__(self, attacker, defender):

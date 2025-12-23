@@ -1,10 +1,17 @@
+from actions.effect import Effect
+from actions.action_context import ActionContext
+
 class Action:
 
-    def __init__(self, name: str, cost: int):
+    def __init__(self, name: str, cost: int, effects: list[Effect], formatted_name: str = None):
         self.name = name
         self.cost = cost
+        self.effects = effects
+        self.formatted_name = formatted_name or name
 
-    def take_action(self):
+    def take_action(self, context: ActionContext):
+        for effect in self.effects:
+            effect.apply(context)
         return self.cost
 
     def to_text(self):
