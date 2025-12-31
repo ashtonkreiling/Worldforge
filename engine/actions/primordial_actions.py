@@ -8,7 +8,7 @@ PRIMORDIAL_ACTIONS = [
     Action("Create Creature", 1),
     Action("Create Leviathan", 10),
     Action("Create Sentient Species", 10),
-    Action("Uplift Creature", 8),
+    Action("Uplift Creature", 9),
     Action("Create Subrace", 5),
     Action("Catastrophe", 5),
     Action("Bind Other Primordial", 8),
