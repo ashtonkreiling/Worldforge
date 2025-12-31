@@ -5,6 +5,7 @@ from actions.effect import Effect
 from objects.object import Object
 from objects.advantage import Advantage
 from objects.disadvantage import Disadvantage
+from utils.prompt_player import prompt_player
 
 class AddHistory(Effect):
     def apply(self, context):
@@ -17,6 +18,15 @@ class AddBlessing(Effect):
 
     def apply(self, context):
         obj = Advantage(self.magnitude)
+        obj.attach_to(context.subject)
+
+class AidInBattle(Effect):
+    def __init__(self, magnitude: int):
+        self.magnitude = magnitude
+        super().__init__()
+
+    def apply(self, context):
+        obj = Advantage(self.magnitude, True)
         obj.attach_to(context.subject)
 
 class AddCurse(Effect):
@@ -37,15 +47,13 @@ class AddChildObject(Effect):
         obj.attach_to(context.subject)
 
 class ResolveBattle(Effect):
-    def __init__(self, attacker, defender):
-        self.attacker = attacker
-        self.defender = defender
-
+    # This won't really work until we have a global map object but the skeleton is here
     def apply(self, context):
-        attacker_roll = self.roll_2d6() + self.apply_settlement_advantages(self.attacker)
-        defender_roll = self.roll_2d6() + self.apply_settlement_advantages(self.defender)
+        attacker = context.subject
+        defender = prompt_player("Who are you attacking?")
+        attacker_roll = self.roll_2d6() + self.apply_settlement_advantages(attacker)
+        defender_roll = self.roll_2d6() + self.apply_settlement_advantages(defender)
         result = self.determine_result(attacker_roll, defender_roll)
-        return super().apply(context)
     
     def apply_settlement_advantages(self, settlement):
         total = settlement.size
