@@ -11,13 +11,21 @@ class AddHistory(Effect):
         context.subject.add_history_entry(context)
 
 class AddBlessing(Effect):
+    def __init__(self, magnitude: int):
+        self.magnitude = magnitude
+        super().__init__()
+
     def apply(self, context):
-        obj = Advantage(1)
+        obj = Advantage(self.magnitude)
         obj.attach_to(context.subject)
 
 class AddCurse(Effect):
+    def __init__(self, magnitude: int):
+        self.magnitude = magnitude
+        super().__init__()
+
     def apply(self, context):
-        obj = Disadvantage(-1)
+        obj = Disadvantage(self.magnitude)
         obj.attach_to(context.subject)
 
 class AddChildObject(Effect):
