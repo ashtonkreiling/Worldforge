@@ -5,6 +5,9 @@ from actions.effect import Effect
 from objects.object import Object
 from objects.advantage import Advantage
 from objects.disadvantage import Disadvantage
+from objects.relationship import Relationship
+from objects.sentient import Sentient
+from deities.patron import Patron
 from utils.prompt_player import prompt_player
 
 class AddHistory(Effect):
@@ -45,6 +48,17 @@ class AddChildObject(Effect):
     def apply(self, context):
         obj = self.object_klass()
         obj.attach_to(context.subject)
+
+class CreateSettlement(Effect):
+    def apply(self, context):
+        name = prompt_player("What is the name of the Patron of this new settlement?")
+        return Patron(name, context.subject)
+    
+class CreateRelationship(Effect):
+    def apply(self, context):
+        other = Sentient()
+        description = prompt_player("What is the nature of the relationship?")
+        return Relationship(description, context.subject, other)
 
 class ResolveBattle(Effect):
     # This won't really work until we have a global map object but the skeleton is here

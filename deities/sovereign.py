@@ -1,6 +1,7 @@
 from deities.lesser_deity import LesserDeity
 from actions.action import Action
 from actions.sovereign_actions import SOVEREIGN_ACTIONS
+from objects.sentient import Sentient
 
 class Sovereign(LesserDeity):
     def __init__(self, name: str = "Sovereign", charge: str = "", power: int = 4, actions: list[Action] = SOVEREIGN_ACTIONS):
@@ -17,8 +18,12 @@ class Sovereign(LesserDeity):
             "Are there relics, temples, or locations that are closely tied to this Sovereign’s essence or influence?",
             "If this Sovereign were a character in a story, how would you describe their temperament or role (mentor, judge, trickster, tyrant, guide, etc.)?"
         ]
-        self.charge = charge
+        self.charge = self.create_charge()
         super().__init__(name, charge, power, actions, questions)
+
+    def create_charge(self):
+        print("Creating the species that is this sovereign's charge")
+        return Sentient()
 
     def take_turn(self):
         self.increment_power()
