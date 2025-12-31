@@ -33,7 +33,7 @@ class Object(ABC):
     
     def add_history_entry(self, context: ActionContext):
         event = Event(context)
-        self.description += f"{event.to_text()}\n"
+        self.description += f"\n{event.to_text()}"
 
     def to_text(self):
         print(f"Name: {self.name}")

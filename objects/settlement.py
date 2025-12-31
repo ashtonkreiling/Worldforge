@@ -1,29 +1,17 @@
 from objects.object import Object
-from objects.project import Project
-from objects.advantage import Advantage
-from objects.artifact import Artifact
-from objects.hero import Hero
-from objects.faction import Faction
-from objects.technology import Technology
 
 class Settlement(Object):
     def __init__(
             self,
             inhabitants: dict[str:int],
-            projects: list[Project] = None,
-            advantages: list[Advantage] = None,
-            artifacts: list[Artifact] = None,
-            heroes: list[Hero] = None,
-            factions: list[Faction] = None,
-            technologies: list[Technology] = None,
         ):
         self.inhabitants = inhabitants
-        self.projects = projects
-        self.advantages = advantages
-        self.artifacts = artifacts
-        self.heroes = heroes
-        self.factions = factions
-        self.technologies = technologies
+        self.projects = []
+        self.advantages = []
+        self.artifacts = []
+        self.heroes = []
+        self.factions = []
+        self.technologies = []
         self.size = 1
         super().__init__()
 

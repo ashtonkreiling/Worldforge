@@ -4,6 +4,7 @@ from actions.effect import Effect
 
 from objects.object import Object
 from objects.advantage import Advantage
+from objects.disadvantage import Disadvantage
 
 class AddHistory(Effect):
     def apply(self, context):
@@ -16,7 +17,7 @@ class AddBlessing(Effect):
 
 class AddCurse(Effect):
     def apply(self, context):
-        obj = Advantage(-1)
+        obj = Disadvantage(-1)
         obj.attach_to(context.subject)
 
 class AddChildObject(Effect):

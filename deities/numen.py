@@ -3,7 +3,6 @@ from actions.action import Action
 from actions.action_context import ActionContext
 from actions.numen_actions import NUMEN_ACTIONS
 from objects.faction import Faction
-from utils.prompt_player import prompt_player
 
 class Numen(LesserDeity):
     def __init__(self, name: str = "Numen", power: int = 4, actions: list[Action] = NUMEN_ACTIONS):
