@@ -30,12 +30,17 @@ class Hex:
         return points
 
     def draw(self, surface):
-        # Draw hex
-        color = (100, 180, 255) if self.selected else (80, 80, 100)
+        base_color = (80, 80, 100)
+        
+        if self.selected:
+            color = tuple(min(c + 50, 255) for c in base_color)
+        else:
+            color = base_color
+
         pygame.draw.polygon(surface, color, self.corners(), 0)
         pygame.draw.polygon(surface, (30, 30, 40), self.corners(), 2)
 
-        # Draw axial coordinates (q, r)
+        # Draw axial coordinates for debugging
         if Hex.font:
             cx, cy = self.pixel_center()
             label = f"{self.q},{self.r}"
