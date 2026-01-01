@@ -2,8 +2,10 @@ import pygame
 import pygame_gui
 
 from ui.hex_map import HexMap
+from ui.hex import Hex
 
 pygame.init()
+Hex.font = pygame.font.SysFont("arial", 14)
 
 WINDOW_SIZE = (1000, 800)
 screen = pygame.display.set_mode(WINDOW_SIZE)
