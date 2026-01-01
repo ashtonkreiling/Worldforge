@@ -10,8 +10,8 @@ class Hex:
         self.selected = False
 
     def pixel_center(self):
-        x = self.size * (3/2 * self.q)
-        y = self.size * (math.sqrt(3) * (self.r + self.q / 2))
+        x = self.size * math.sqrt(3) * (self.q + self.r / 2)
+        y = self.size * 3/2 * self.r
         return (
             self.center[0] + x,
             self.center[1] + y
@@ -21,7 +21,7 @@ class Hex:
         cx, cy = self.pixel_center()
         points = []
         for i in range(6):
-            angle = math.pi / 3 * i
+            angle = math.pi / 3 * i + math.pi / 6
             px = cx + self.size * math.cos(angle)
             py = cy + self.size * math.sin(angle)
             points.append((px, py))
