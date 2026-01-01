@@ -11,16 +11,16 @@ class Hex:
         self.center = center
         self.selected = False
 
-    def pixel_center(self):
+    def pixel_center(self, offset=(0, 0)):
         x = self.size * math.sqrt(3) * (self.q + self.r / 2)
         y = self.size * 3/2 * self.r
         return (
-            self.center[0] + x,
-            self.center[1] + y
+            self.center[0] + x + offset[0],
+            self.center[1] + y + offset[1]
         )
 
-    def corners(self):
-        cx, cy = self.pixel_center()
+    def corners(self, offset=(0, 0)):
+        cx, cy = self.pixel_center(offset)
         points = []
         for i in range(6):
             angle = math.pi / 3 * i + math.pi / 6
@@ -29,20 +29,15 @@ class Hex:
             points.append((px, py))
         return points
 
-    def draw(self, surface):
+    def draw(self, surface, offset=(0, 0)):
         base_color = (80, 80, 100)
-        
-        if self.selected:
-            color = tuple(min(c + 50, 255) for c in base_color)
-        else:
-            color = base_color
+        color = tuple(min(c + 50, 255) for c in base_color) if self.selected else base_color
 
-        pygame.draw.polygon(surface, color, self.corners(), 0)
-        pygame.draw.polygon(surface, (30, 30, 40), self.corners(), 2)
+        pygame.draw.polygon(surface, color, self.corners(offset), 0)
+        pygame.draw.polygon(surface, (30, 30, 40), self.corners(offset), 2)
 
-        # Draw axial coordinates for debugging
         if Hex.font:
-            cx, cy = self.pixel_center()
+            cx, cy = self.pixel_center(offset)
             label = f"{self.q},{self.r}"
             text_surf = Hex.font.render(label, True, (220, 220, 220))
             text_rect = text_surf.get_rect(center=(cx, cy))
