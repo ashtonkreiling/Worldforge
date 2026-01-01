@@ -51,7 +51,7 @@ class HexMap:
             for hex in self.hexes:
                 hex.selected = False
             for hex in self.hexes:
-                if hex.contains_point(event.pos):
+                if hex.contains_point(event.pos, self.camera_offset):
                     hex.selected = True
                     break
 

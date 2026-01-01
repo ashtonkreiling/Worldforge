@@ -43,9 +43,10 @@ class Hex:
             text_rect = text_surf.get_rect(center=(cx, cy))
             surface.blit(text_surf, text_rect)
 
-    def contains_point(self, point):
+    def contains_point(self, point, offset=(0,0)):
         polygon = self.corners()
-        x, y = point
+        x = point[0] - offset[0]
+        y = point[1] - offset[1]
         inside = False
 
         n = len(polygon)
