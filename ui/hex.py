@@ -27,7 +27,7 @@ class Hex:
 
     @staticmethod
     def draw(surface, q, r, size, center, offset=(0,0), selected=False):
-        base_color = (80, 80, 100)
+        base_color = (16, 89, 100)
         color = tuple(min(c + 50, 255) for c in base_color) if selected else base_color
 
         corners = Hex.corners(q, r, size, center, offset)
