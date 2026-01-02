@@ -1,8 +1,8 @@
 import pygame
 import pygame_gui
 
-from ui.hex_map import HexMap
-from ui.hex import Hex
+from client.hex_map import HexMap
+from client.hex import Hex
 
 PAN_SPEED = 20
 

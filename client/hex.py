@@ -1,4 +1,3 @@
-# ui/hex.py
 import math
 import pygame
 

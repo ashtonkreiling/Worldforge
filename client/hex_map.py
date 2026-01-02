@@ -1,7 +1,6 @@
-# ui/hex_map.py
 import math
 import pygame
-from ui.hex import Hex
+from client.hex import Hex
 
 class HexMap:
     def __init__(self, radius, hex_size, center):
