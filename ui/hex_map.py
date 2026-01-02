@@ -44,6 +44,8 @@ class HexMap:
                     size,
                     self.center,
                     offset=self.camera_offset,
+                    height=0,
+                    color=(16,89,100),
                     selected=selected
                 )
 

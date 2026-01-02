@@ -26,8 +26,8 @@ class Hex:
         return points
 
     @staticmethod
-    def draw(surface, q, r, size, center, offset=(0,0), selected=False):
-        base_color = (16, 89, 100)
+    def draw(surface, q, r, size, center, offset=(0,0), height=0, color=(16,89,100), selected=False):
+        base_color = color
         color = tuple(min(c + 50, 255) for c in base_color) if selected else base_color
 
         corners = Hex.corners(q, r, size, center, offset)
@@ -37,7 +37,7 @@ class Hex:
 
         if Hex.font:
             cx, cy = Hex.pixel_center(q, r, size, center, offset)
-            label = f"{q},{r}"
+            label = f"{q},{r}-{height}"
             text_surf = Hex.font.render(label, True, (220, 220, 220))
             surface.blit(text_surf, text_surf.get_rect(center=(cx, cy)))
 
