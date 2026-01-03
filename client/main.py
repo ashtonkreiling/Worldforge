@@ -1,6 +1,9 @@
 import pygame
 import pygame_gui
 
+from server.world.world_state import WorldState
+from client.game_ui import GameUI
+
 from client.hex_map import HexMap
 from client.hex import Hex
 
@@ -15,8 +18,10 @@ pygame.display.set_caption("WorldForge")
 
 clock = pygame.time.Clock()
 manager = pygame_gui.UIManager(WINDOW_SIZE)
+game_ui = GameUI(manager, WINDOW_SIZE)
 
-hex_map = HexMap(radius=100, hex_size=40, center=(500, 400))
+world_state = WorldState()
+hex_map = HexMap(radius=100, hex_size=40, center=(500, 400), server_connection=world_state)
 
 running = True
 while running:
@@ -27,6 +32,7 @@ while running:
             running = False
 
         hex_map.handle_event(event)
+        game_ui.process_event(event, hex_map, world_state)
         manager.process_events(event)
 
     keys = pygame.key.get_pressed()

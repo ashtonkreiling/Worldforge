@@ -4,12 +4,13 @@ from client.hex import Hex
 from server.world.world_state import WorldState
 
 class HexMap:
-    def __init__(self, radius, hex_size, center):
+    def __init__(self, radius, hex_size, center, server_connection: WorldState):
         self.radius = radius
         self.hex_size = hex_size
         self.center = center
         self.camera_offset = [0, 0]
         self.selected_hex = None
+        self.server_connection = server_connection
 
     def draw(self, surface):
         screen = surface.get_rect()
@@ -33,7 +34,7 @@ class HexMap:
 
         server_hexes = {
             (h["q"], h["r"]): h
-            for h in WorldState().get_hexes_in_range(q_min, q_max, r_min, r_max)
+            for h in self.server_connection.get_hexes_in_range(q_min, q_max, r_min, r_max)
         }
 
         for q in range(q_min, q_max + 1):
