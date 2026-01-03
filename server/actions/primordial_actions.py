@@ -1,16 +1,15 @@
 from server.actions.action import Action
 
 PRIMORDIAL_ACTIONS = [
-    Action("Rest", 0),
-    Action("Raise/Lower Land (9 Hexes)", 8),
-    Action("Shape Land (1 Hex)", 1),
-    Action("Add Resource", 1),
-    Action("Create Creature", 1),
-    Action("Create Leviathan", 10),
-    Action("Create Sentient Species", 10),
-    Action("Uplift Creature", 9),
-    Action("Create Subrace", 5),
-    Action("Catastrophe", 5),
-    Action("Bind Other Primordial", 8),
-    Action("Command Leviathan", 2)
+    Action("Rest", 0, [], "rested"),
+    Action("Shape Land (1 Hex)", 1, [], "shaped land"),
+    Action("Add Resource", 1, [], "added a resource"),
+    Action("Create Creature", 1, [], "created a creature"),
+    Action("Create Leviathan", 10, [], "created a leviathan"),
+    Action("Create Sentient Species", 10, [], "created a sentient species"),
+    Action("Uplift Creature", 9, [], "uplifted a creature"),
+    Action("Create Subrace", 5, [], "created a subrace"),
+    Action("Catastrophe", 5, [], "caused a catastrophe"),
+    Action("Bind Other Primordial", 8, [], "bound a different primordial"),
+    Action("Command Leviathan", 2, [], "commanded a leviathan")
 ]

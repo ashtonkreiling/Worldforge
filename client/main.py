@@ -18,10 +18,10 @@ pygame.display.set_caption("WorldForge")
 
 clock = pygame.time.Clock()
 manager = pygame_gui.UIManager(WINDOW_SIZE)
-game_ui = GameUI(manager, WINDOW_SIZE)
 
 world_state = WorldState()
 hex_map = HexMap(radius=100, hex_size=40, center=(500, 400), server_connection=world_state)
+game_ui = GameUI(manager, WINDOW_SIZE, server_connection=world_state)
 
 running = True
 while running:

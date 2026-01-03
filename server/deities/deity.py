@@ -13,7 +13,7 @@ class Deity(ABC):
     def __init__(self, name: str, power: int, actions: list[Action], questions: list[str]):
         self.name = name
         self.power = power
-        self.description = self.generate_description(questions)
+        self.description = "" # self.generate_description(questions)
         self.actions = actions
         self.file_path = to_filename(name)
 
@@ -39,6 +39,22 @@ class Deity(ABC):
         roll2 = random.randint(1, 6)
         total = roll1 + roll2
         self.power += total
+
+    def take_action(self, index: int):
+        if index == 0:
+            print("Rested")
+            return True # Flag to end turn
+        if 0 <= index < len(self.actions):
+            action =  self.actions[index]
+            cost = action.cost
+            if cost <= self.power:
+                context = self.set_context(action)
+                self.power -= action.take_action(context)
+            else:
+                print("That action is too expensive for the power you have left")
+            return self.power <= 0
+
+
 
     def take_actions(self):
         while self.power > 0:
