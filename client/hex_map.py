@@ -1,6 +1,7 @@
 import math
 import pygame
 from client.hex import Hex
+from server.world.world_state import WorldState
 
 class HexMap:
     def __init__(self, radius, hex_size, center):
@@ -30,12 +31,20 @@ class HexMap:
         r_min = math.floor(min(r1, r2)) - 2
         r_max = math.ceil(max(r1, r2)) + 2
 
+        server_hexes = {
+            (h["q"], h["r"]): h
+            for h in WorldState().get_hexes_in_range(q_min, q_max, r_min, r_max)
+        }
+
         for q in range(q_min, q_max + 1):
             for r in range(r_min, r_max + 1):
                 if abs(q) > self.radius or abs(r) > self.radius or abs(q+r) > self.radius:
                     continue
 
                 selected = self.selected_hex == (q, r)
+                hex_data = server_hexes.get((q, r))
+                height = hex_data["height"] if hex_data else 0
+                color  = tuple(hex_data["color"]) if hex_data else (16,89,100)
 
                 Hex.draw(
                     surface,
@@ -43,8 +52,8 @@ class HexMap:
                     size,
                     self.center,
                     offset=self.camera_offset,
-                    height=0,
-                    color=(16,89,100),
+                    height=height,
+                    color=color,
                     selected=selected
                 )
 
