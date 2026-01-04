@@ -67,12 +67,17 @@ class WorldState:
         if deity_id != self.current_turn:
             raise ValueError("Not your turn")
         
-        context = deity.set_context(deity.actions[action_index])
-        context.q = q
-        context.r = r
-        context.turn = self.current_round
+        context = {
+            "year": self.current_round * 100,
+            "world": self,
+            "q": q,
+            "r": r,
+            "height": 1,
+            "color": (100,89,16),
+            "terrain": "plains",
+        }
         
-        end_turn = deity.take_action(action_index, self, context)
+        end_turn = deity.take_action(action_index, context)
 
         if end_turn:
             self.increment_turn_or_round()

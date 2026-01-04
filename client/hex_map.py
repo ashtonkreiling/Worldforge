@@ -43,6 +43,7 @@ class HexMap:
                     continue
 
                 selected = self.selected_hex == (q, r)
+
                 hex_data = server_hexes.get((q, r))
                 height = hex_data["height"] if hex_data else 0
                 color  = tuple(hex_data["color"]) if hex_data else (16,89,100)
@@ -71,6 +72,7 @@ class HexMap:
                         self.center,
                         self.camera_offset
                     ):
+                        print(q, r)
                         self.selected_hex = (q, r)
                         return
 

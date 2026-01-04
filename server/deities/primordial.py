@@ -22,21 +22,14 @@ class Primordial(Deity):
     def take_turn(self):
         self.increment_power()
         self.take_actions()
-
-    def set_context(self, action):
-        return ActionContext(
-            self,
-            action.formatted_name,
-            self.set_subject(action),
-        )
     
     def set_actions(self):
         return [
             Action("Rest", 0),
-            ShapeLand(),
-            AddResource(),
-            CreateCreature(),
-            CreateLeviathan(),
+            ShapeLand(self),
+            AddResource(self),
+            CreateCreature(self),
+            CreateLeviathan(self),
             Action("Create Sentient Species", 10),
             Action("Uplift Creature", 9),
             Action("Create Subrace", 5),
@@ -51,6 +44,10 @@ class Primordial(Deity):
 
 
 class PrimordialAction(Action):
+    def __init__(self, name, cost, deity):
+        self.deity = deity
+        super().__init__(name, cost)
+
     def unpack_world_context(self, context):
         return [context["year"], context["world"]]
 
@@ -64,28 +61,28 @@ class PrimordialAction(Action):
         return [context["name"], context["description"], context["tags"]]
 
 class ShapeLand(PrimordialAction):
-    def __init__(self):
-        super().__init__("Shape Land", 1)
+    def __init__(self, deity):
+        super().__init__("Shape Land", 1, deity)
 
     def take_action(self, context):
         # Context needs: q, r, height, color, terrain, year(round)
         year, world = self.unpack_world_context(context)
         q, r = self.unpack_hex_context(context)
         height, color, terrain = self.unpack_extended_hex_context(context)
-        self.description += f"\nDuring year {year} {self.name} shaped the hex at {q},{r}"
+        self.deity.description += f"\nDuring year {year} {self.deity.name} shaped the hex at {q},{r}"
         world.changed_hexes[(q,r)] = Hex(q, r, height, color, terrain)
         return self.cost
     
 class AddResource(PrimordialAction):
-    def __init__(self):
-        super().__init__("Add Resource", 1)
+    def __init__(self, deity):
+        super().__init__("Add Resource", 1, deity)
 
     def take_action(self, context):
         # Context needs: q, r, name, description, tags, year(round)
         year, world = self.unpack_world_context(context)
         q, r = self.unpack_hex_context(context)
         name, description, tags = self.unpack_object_context(context)
-        self.description += f"\nDuring year {year} {self.name} added a resource to the hex at {q},{r}"
+        self.deity.description += f"\nDuring year {year} {self.name} added a resource to the hex at {q},{r}"
 
         hex = world.changed_hexes[(q,r)]
         if hex == None:
@@ -98,15 +95,15 @@ class AddResource(PrimordialAction):
         return self.cost
 
 class CreateCreature(PrimordialAction):
-    def __init__(self):
-        super().__init__("Create Creature", 1)
+    def __init__(self, deity):
+        super().__init__("Create Creature", 1, deity)
 
     def take_action(self, context):
         # Context needs: q, r, name, description, tags, year(round)
         year, world = self.unpack_world_context(context)
         q, r = self.unpack_hex_context(context)
         name, description, tags = self.unpack_object_context(context)
-        self.description += f"\nDuring year {year} {self.name} added a new creature to the hex at {q},{r}"
+        self.deity.description += f"\nDuring year {year} {self.name} added a new creature to the hex at {q},{r}"
 
         hex = world.changed_hexes[(q,r)]
         if hex == None:
@@ -119,15 +116,15 @@ class CreateCreature(PrimordialAction):
         return self.cost
     
 class CreateLeviathan(PrimordialAction):
-    def __init__(self):
-        super().__init__("Create Leviathan", 10)
+    def __init__(self, deity):
+        super().__init__("Create Leviathan", 10, deity)
 
     def take_action(self, context):
         # Context needs: q, r, name, description, tags, year(round)
         year, world = self.unpack_world_context(context)
         q, r = self.unpack_hex_context(context)
         name, description, tags = self.unpack_object_context(context)
-        self.description += f"\nDuring year {year} {self.name} added a new creature to the hex at {q},{r}"
+        self.deity.description += f"\nDuring year {year} {self.name} added a new creature to the hex at {q},{r}"
 
         hex = world.changed_hexes[(q,r)]
         if hex == None:

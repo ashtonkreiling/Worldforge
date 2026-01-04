@@ -4,8 +4,6 @@ from abc import ABC, abstractmethod
 from server.actions.action import Action
 from server.actions.action_context import ActionContext
 
-from server.world.world_state import WorldState
-
 from server.utils.name_to_filename import to_filename
 from server.utils.prompt_player import prompt_player
 
@@ -47,7 +45,7 @@ class Deity(ABC):
         total = roll1 + roll2
         self.power += total
 
-    def take_action(self, index: int, world: WorldState, passed_context: ActionContext = None):
+    def take_action(self, index: int, context):
         if index == 0:
             print("Rested")
             return True # Flag to end turn
@@ -55,16 +53,11 @@ class Deity(ABC):
             action =  self.actions[index]
             cost = action.cost
             if cost <= self.power:
-                if passed_context == None:
-                    context = self.set_context(action)
-                else:
-                    context = passed_context
-                self.power -= action.take_action(context, world)
+                self.power -= action.take_action(context)
             else:
                 print("That action is too expensive for the power you have left")
             return self.power <= 0
-
-
+        return False
 
     def take_actions(self):
         while self.power > 0:
