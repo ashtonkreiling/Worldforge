@@ -1,5 +1,6 @@
 from server.world.hex import Hex
 from server.deities.primordial import Primordial
+from actions.action_context import ActionContext
 
 class WorldState:
     def __init__(self):
@@ -24,6 +25,10 @@ class WorldState:
         if hex is None:
             return None
         return self.format_hex_to_dict(hex)
+    
+    def create_or_edit_hex(self, q, r, height, color, terrain):
+        hex = Hex(q, r, height, color, terrain)
+        self.changed_hexes[(q,r)] = hex
 
 
     def get_hexes_in_range(self, q_min, q_max, r_min, r_max):
@@ -38,7 +43,7 @@ class WorldState:
     def get_turn_payload(self):
         deity = self.get_current_deity()
         return {
-            "id": self.current_turn,
+            "year": self.current_round * 100,
             "name": deity.name,
             "power": deity.power,
             "actions": [
@@ -57,7 +62,12 @@ class WorldState:
         if deity_id != self.current_turn:
             raise ValueError("Not your turn")
         
-        end_turn = deity.take_action(action_index)
+        context = deity.set_context(deity.actions[action_index])
+        context.q = q
+        context.r = r
+        context.turn = self.current_round
+        
+        end_turn = deity.take_action(action_index, self, context)
 
         if end_turn:
             self.increment_turn_or_round()

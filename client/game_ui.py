@@ -29,13 +29,13 @@ class GameUI:
 
         self.player_label = pygame_gui.elements.UILabel(
             relative_rect=pygame.Rect(20, 10, 400, 40),
-            text=f"Turn: {self.turn_payload["name"]}",
+            text=f"Turn: {self.turn_payload["name"]} Year: {self.turn_payload["year"]}",
             manager=self.manager,
             container=self.header_panel
         )
 
     def reset_header(self):
-        self.player_label.set_text(f"Turn: {self.turn_payload["name"]}")
+        self.player_label.set_text(f"Turn: {self.turn_payload["name"]} Year: {self.turn_payload["year"]}")
 
     def _build_sidebar(self):
         self.sidebar_panel = pygame_gui.elements.UIPanel(

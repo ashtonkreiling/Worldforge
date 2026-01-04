@@ -11,15 +11,19 @@ from server.deities.patron import Patron
 from server.utils.prompt_player import prompt_player
 
 class AddHistory(Effect):
-    def apply(self, context):
+    def apply(self, context, _world):
         context.subject.add_history_entry(context)
+
+class EditHex(Effect):
+    def apply(self, context, world):
+        world.create_or_edit_hex(context.q, context.r, )
 
 class AddBlessing(Effect):
     def __init__(self, magnitude: int):
         self.magnitude = magnitude
         super().__init__()
 
-    def apply(self, context):
+    def apply(self, context, _world):
         obj = Advantage(self.magnitude)
         obj.attach_to(context.subject)
 
@@ -28,7 +32,7 @@ class AidInBattle(Effect):
         self.magnitude = magnitude
         super().__init__()
 
-    def apply(self, context):
+    def apply(self, context, _world):
         obj = Advantage(self.magnitude, True)
         obj.attach_to(context.subject)
 
@@ -37,7 +41,7 @@ class AddCurse(Effect):
         self.magnitude = magnitude
         super().__init__()
 
-    def apply(self, context):
+    def apply(self, context, _world):
         obj = Disadvantage(self.magnitude)
         obj.attach_to(context.subject)
 
@@ -45,24 +49,24 @@ class AddChildObject(Effect):
     def __init__(self, object_klass: type[Object]):
         self.object_klass = object_klass
 
-    def apply(self, context):
+    def apply(self, context, _world):
         obj = self.object_klass()
         obj.attach_to(context.subject)
 
 class CreateSettlement(Effect):
-    def apply(self, context):
+    def apply(self, context, _world):
         name = prompt_player("What is the name of the Patron of this new settlement?")
         return Patron(name, context.subject)
     
 class CreateRelationship(Effect):
-    def apply(self, context):
+    def apply(self, context, _world):
         other = Sentient()
         description = prompt_player("What is the nature of the relationship?")
         return Relationship(description, context.subject, other)
 
 class ResolveBattle(Effect):
     # This won't really work until we have a global map object but the skeleton is here
-    def apply(self, context):
+    def apply(self, context, _world):
         attacker = context.subject
         defender = prompt_player("Who are you attacking?")
         attacker_roll = self.roll_2d6() + self.apply_settlement_advantages(attacker)

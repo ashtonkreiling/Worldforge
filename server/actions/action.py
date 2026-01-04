@@ -1,17 +1,15 @@
 from server.actions.effect import Effect
 from server.actions.action_context import ActionContext
 
+from server.world.world_state import WorldState
+
 class Action:
 
-    def __init__(self, name: str, cost: int, effects: list[Effect], formatted_name: str):
+    def __init__(self, name: str, cost: int):
         self.name = name
         self.cost = cost
-        self.effects = effects
-        self.formatted_name = formatted_name
 
-    def take_action(self, context: ActionContext):
-        for effect in self.effects:
-            effect.apply(context)
+    def take_action(self, context: ActionContext, world: WorldState):
         return self.cost
 
     def to_text(self):

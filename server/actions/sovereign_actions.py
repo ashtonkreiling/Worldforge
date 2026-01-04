@@ -1,17 +1,9 @@
 from server.actions.action import Action
 
-from server.actions.effects import CreateSettlement, AddHistory, CreateRelationship
-
 SOVEREIGN_ACTIONS = [
     Action("Rest", 0),
-    Action("Inspire New Settlement", 2, [
-        AddHistory(),
-        CreateSettlement()
-    ], "inspired a new settlement of"),
-    Action("Spark Enmity/Friendship", 3, [
-        AddHistory(),
-        CreateRelationship(),
-    ], "changed the relationship of"),
+    Action("Inspire New Settlement", 2),
+    Action("Spark Enmity/Friendship", 3),
     Action("Bless Settlement", 4),
     Action("Create Hero", 10),
     Action("Save Charge from Cataclysm", 7),

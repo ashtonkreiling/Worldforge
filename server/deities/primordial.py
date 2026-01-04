@@ -22,9 +22,12 @@ class Primordial(Deity):
         return ActionContext(
             self,
             action.formatted_name,
-            None,
-            1,
+            self.set_subject(action),
         )
+    
+    def set_subject(self, action: Action):
+        # Primordials can take action on many different subjects so we need some handling logic eventually
+        return None
 
 
 
