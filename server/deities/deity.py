@@ -13,11 +13,11 @@ from server.utils.prompt_player import prompt_player
 
 class Deity(ABC):
     
-    def __init__(self, name: str, power: int, actions: list[Action], questions: list[str]):
+    def __init__(self, name: str, power: int, questions: list[str]):
         self.name = name
         self.power = power
         self.description = "" # self.generate_description(questions)
-        self.actions = actions
+        self.actions = self.set_actions()
         self.file_path = to_filename(name)
 
     def generate_description(self, questions):
@@ -29,6 +29,10 @@ class Deity(ABC):
     
     @abstractmethod
     def take_turn(self):
+        pass
+
+    @abstractmethod
+    def set_actions(self):
         pass
 
     def to_text(self):
@@ -82,10 +86,6 @@ class Deity(ABC):
                     self.power -= selected_action.take_action(context)
                 else:
                     print("That action is too expensive for the power you have left")
-
-    @abstractmethod
-    def set_context(self, action):
-        pass
 
     def power_header_to_text(self):
         print("---------------------------------------")

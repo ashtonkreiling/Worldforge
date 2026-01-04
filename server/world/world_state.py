@@ -1,6 +1,5 @@
 from server.world.hex import Hex
 from server.deities.primordial import Primordial
-from actions.action_context import ActionContext
 
 class WorldState:
     def __init__(self):
@@ -27,8 +26,14 @@ class WorldState:
         return self.format_hex_to_dict(hex)
     
     def create_or_edit_hex(self, q, r, height, color, terrain):
-        hex = Hex(q, r, height, color, terrain)
-        self.changed_hexes[(q,r)] = hex
+        if self.changed_hexes[(q,r)]:
+            hex = self.changed_hexes[(q,r)]
+            hex.height = height
+            hex.color = color
+            hex.terrain = terrain
+        else:
+            hex = Hex(q, r, height, color, terrain)
+            self.changed_hexes[(q,r)] = hex
 
 
     def get_hexes_in_range(self, q_min, q_max, r_min, r_max):
