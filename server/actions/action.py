@@ -12,3 +12,6 @@ class Action:
 
     def matches_name(self, user_input: str) -> bool:
         return self.name.lower() == user_input.lower()
+    
+    def fields(self):
+        return {}

@@ -30,10 +30,9 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-
-        hex_map.handle_event(event)
-        game_ui.process_event(event, hex_map, world_state)
         manager.process_events(event)
+        hex_map.handle_event(event, manager)
+        game_ui.process_event(event, hex_map, world_state)
 
     keys = pygame.key.get_pressed()
     if keys[pygame.K_LEFT]:

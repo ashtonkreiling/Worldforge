@@ -4,8 +4,15 @@ from server.deities.primordial import Primordial
 class WorldState:
     def __init__(self):
         self.deities = [Primordial(), Primordial("Primordial 2")]
-        self.current_turn = 0 # Which Deity in self.deities is taking a turn
-        self.current_round = 0 # What "year" of history it is right now
+        # Which Deity in self.deities is taking a turn
+        self.current_turn = 0
+        # What "year" of history it is right now
+        self.current_round = 0
+        # When a primordial causes a cataclysm or sends a
+        # leviathan to attack a settlement, sovereigns have
+        # a chance to respond before the settlement is destroyed
+        # this gets cleared at the end of the round
+        self.hexes_to_update = {}
         self.changed_hexes = {
            (1,1): Hex(1,1,1,(100,89,16),"plains")
         }  # (q,r) -> Hex
@@ -55,7 +62,8 @@ class WorldState:
                 {
                     "index": i,
                     "name": action.name,
-                    "cost": action.cost
+                    "cost": action.cost,
+                    "fields": action.fields,
                 }
                 for i, action in enumerate(deity.actions)
             ]
@@ -81,6 +89,7 @@ class WorldState:
 
         if end_turn:
             self.increment_turn_or_round()
+            self.clear_hexes_to_update()
             self.get_current_deity().increment_power()
 
 
@@ -88,8 +97,12 @@ class WorldState:
         deity = self.get_current_deity()
         if deity.power <= 0:
             self.increment_turn_or_round()
+            self.clear_hexes_to_update()
             deity = self.get_current_deity()
             deity.increment_power()
+
+    def clear_hexes_to_update(self):
+        pass
 
     def increment_turn_or_round(self):
         if self.current_turn + 1 >= len(self.deities):

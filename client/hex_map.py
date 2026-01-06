@@ -59,8 +59,8 @@ class HexMap:
                     selected=selected
                 )
 
-    def handle_event(self, event):
-        if event.type == pygame.MOUSEBUTTONDOWN:
+    def handle_event(self, event, manager):
+        if event.type == pygame.MOUSEBUTTONDOWN and not manager.get_hovering_any_element():
             for q in range(-self.radius, self.radius + 1):
                 for r in range(-self.radius, self.radius + 1):
                     if abs(q + r) > self.radius:
@@ -72,7 +72,6 @@ class HexMap:
                         self.center,
                         self.camera_offset
                     ):
-                        print(q, r)
                         self.selected_hex = (q, r)
                         return
 

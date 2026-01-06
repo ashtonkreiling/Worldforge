@@ -36,6 +36,12 @@ class Deity(ABC):
     def to_text(self):
         print(f"Name: {self.name}")
         print(self.description)
+
+    def decrement_power(self):
+        roll1 = random.randint(1, 6)
+        roll2 = random.randint(1, 6)
+        total = roll1 + roll2
+        self.power -= total
     
     def increment_power(self):
         if self.power < 4:

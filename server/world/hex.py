@@ -17,3 +17,4 @@ class Hex:
         self.settlements = []
         self.leviathans = []
         self.artifacts = []
+        self.cataclysms = []
