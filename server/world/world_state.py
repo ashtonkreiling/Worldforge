@@ -63,7 +63,7 @@ class WorldState:
                     "index": i,
                     "name": action.name,
                     "cost": action.cost,
-                    "fields": action.fields,
+                    "fields": action.fields(),
                 }
                 for i, action in enumerate(deity.actions)
             ]
