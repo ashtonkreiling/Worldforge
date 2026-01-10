@@ -2,12 +2,15 @@ import pygame
 import pygame_gui
 
 from server.world.world_state import WorldState
+from client.action_form import ActionForm
 
 class GameUI:
     def __init__(self, manager, window_size, server_connection: WorldState):
         self.manager = manager
         self.window_width, self.window_height = window_size
         self.server_connection = server_connection
+
+        self.active_form = None
 
         self.header_height = 60
         self.sidebar_width = 220
@@ -104,21 +107,42 @@ class GameUI:
 
 
     def process_event(self, event, hex_map, world_state):
+        if hex_map.selected_hex is None:
+            return  # No target selected
+
         if event.type == pygame_gui.UI_BUTTON_PRESSED:
             if event.ui_element in self.action_buttons:
-                action_index = event.ui_element.action_index
-
-                if hex_map.selected_hex is None:
-                    return  # No target selected
-
-                q, r = hex_map.selected_hex
-
-                world_state.apply_action(
-                    deity_id=world_state.current_turn,
-                    action_index=action_index,
-                    q=q,
-                    r=r
+                action = next(
+                    a for a in self.turn_payload["actions"]
+                    if a["index"] == event.ui_element.action_index
                 )
+
+                self.active_form = ActionForm(
+                    self.manager,
+                    pygame.Rect(400, 100, 300, 400),
+                    action
+                )
+
+            if self.active_form:
+                if event.ui_element == self.active_form.submit:
+                    data = self.active_form.collect_values()
+
+                    q, r = hex_map.selected_hex
+                    world_state.apply_action(
+                        deity_id=world_state.current_turn,
+                        action_index=self.active_form.action["index"],
+                        q=q,
+                        r=r,
+                        params=data
+                    )
+
+                    self.active_form.destroy()
+                    self.active_form = None
+                    self.refresh_ui()
+
+                elif event.ui_element == self.active_form.cancel:
+                    self.active_form.destroy()
+                    self.active_form = None
 
                 # Update UI state
                 self.turn_payload = self.server_connection.get_turn_payload()
