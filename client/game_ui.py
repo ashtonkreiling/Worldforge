@@ -112,6 +112,9 @@ class GameUI:
 
         if event.type == pygame_gui.UI_BUTTON_PRESSED:
             if event.ui_element in self.action_buttons:
+                if self.active_form:
+                    self.active_form.destroy()
+                    self.active_form = None
                 action = next(
                     a for a in self.turn_payload["actions"]
                     if a["index"] == event.ui_element.action_index

@@ -60,7 +60,7 @@ class HexMap:
                 )
 
     def handle_event(self, event, manager):
-        if event.type == pygame.MOUSEBUTTONDOWN and not manager.get_hovering_any_element():
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and not manager.get_hovering_any_element():
             for q in range(-self.radius, self.radius + 1):
                 for r in range(-self.radius, self.radius + 1):
                     if abs(q + r) > self.radius:
