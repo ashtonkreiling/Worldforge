@@ -69,7 +69,7 @@ class WorldState:
             ]
         }
 
-    def apply_action(self, deity_id, action_index, q, r):
+    def apply_action(self, deity_id, action_index, q, r, params):
         deity = self.get_current_deity()
 
         if deity_id != self.current_turn:
@@ -80,7 +80,7 @@ class WorldState:
             "world": self,
             "q": q,
             "r": r,
-            "height": 1,
+            "height_delta": params["height_delta"],
             "color": (100,89,16),
             "terrain": "plains",
         }

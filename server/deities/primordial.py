@@ -57,7 +57,7 @@ class PrimordialAction(Action):
         return [context["q"], context["r"]]
     
     def unpack_extended_hex_context(self, context):
-        return [context["height"], context["color"], context["terrain"]]
+        return [context["height_delta"], context["color"], context["terrain"]]
     
     def unpack_object_context(self, context):
         return [context["name"], context["description"], context["tags"]]
@@ -83,8 +83,17 @@ class ShapeLand(PrimordialAction):
         # Context needs: q, r, height, color, terrain, year(round)
         year, world = self.unpack_world_context(context)
         q, r = self.unpack_hex_context(context)
-        height, color, terrain = self.unpack_extended_hex_context(context)
+        height_delta, color, terrain = self.unpack_extended_hex_context(context)
         self.deity.description += f"\nDuring year {year} {self.deity.name} shaped the hex at {q},{r}"
+
+        old_hex = world.changed_hexes.get((q, r))
+
+        if old_hex is not None:
+            height = old_hex.height + height_delta
+        else:
+            height = height_delta
+
+
         world.changed_hexes[(q,r)] = Hex(q, r, height, color, terrain)
         return self.cost
     
@@ -169,7 +178,7 @@ class CreateSentient(PrimordialAction):
 
     def take_action(self, context):
         year, world = self.unpack_world_context(context)
-        q, r = self.unpack_extended_hex_context(context)
+        q, r = self.unpack_hex_context(context)
         sovereign_name = context["sovereign_name"]
         sovereign_appearance = context["sovereign_appearance"]
         sovereign_goals = context["sovereign_goals"]
@@ -250,7 +259,7 @@ class UpliftCreature(PrimordialAction):
 
     def take_action(self, context):
         year, world = self.unpack_world_context(context)
-        q, r = self.unpack_extended_hex_context(context)
+        q, r = self.unpack_hex_context(context)
         sovereign_name = context["sovereign_name"]
         sovereign_appearance = context["sovereign_appearance"]
         sovereign_goals = context["sovereign_goals"]
@@ -331,7 +340,7 @@ class CreateSubrace(PrimordialAction):
 
     def take_action(self, context):
         year, world = self.unpack_world_context(context)
-        q, r = self.unpack_extended_hex_context(context)
+        q, r = self.unpack_hex_context(context)
         sovereign_name = context["sovereign_name"]
         sovereign_appearance = context["sovereign_appearance"]
         sovereign_goals = context["sovereign_goals"]

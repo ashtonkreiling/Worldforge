@@ -108,13 +108,30 @@ class GameUI:
 
     def process_event(self, event, hex_map, world_state):
         if hex_map.selected_hex is None:
-            return  # No target selected
+            return
 
         if event.type == pygame_gui.UI_BUTTON_PRESSED:
+
+            #
+            # ─── INCREMENT BUTTONS ─────────────────────────────────────────
+            #
+            if (
+                self.active_form
+                and hasattr(event.ui_element, "increment_field")
+            ):
+                self.active_form.set_increment_value(
+                    event.ui_element.increment_field,
+                    event.ui_element.increment_value
+                )
+                return
+
+            #
+            # ─── ACTION BUTTONS ────────────────────────────────────────────
+            #
             if event.ui_element in self.action_buttons:
                 if self.active_form:
                     self.active_form.destroy()
-                    self.active_form = None
+
                 action = next(
                     a for a in self.turn_payload["actions"]
                     if a["index"] == event.ui_element.action_index
@@ -125,6 +142,7 @@ class GameUI:
                     pygame.Rect(400, 100, 300, 400),
                     action
                 )
+                return
 
             if self.active_form:
                 if event.ui_element == self.active_form.submit:
@@ -141,13 +159,13 @@ class GameUI:
 
                     self.active_form.destroy()
                     self.active_form = None
-                    self.refresh_ui()
+                    self.reset_header()
+                    self.reset_sidebar()
 
                 elif event.ui_element == self.active_form.cancel:
                     self.active_form.destroy()
                     self.active_form = None
 
-                # Update UI state
                 self.turn_payload = self.server_connection.get_turn_payload()
                 self.reset_header()
                 self.reset_sidebar()

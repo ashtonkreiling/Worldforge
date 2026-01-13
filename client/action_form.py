@@ -23,7 +23,7 @@ class ActionForm:
         panel_rect = self.panel.get_relative_rect()
 
         #
-        # ─── TITLE (FIXED) ─────────────────────────────────────────────
+        # ─── TITLE ─────────────────────────────────────────────────────
         #
         self.title = pygame_gui.elements.UILabel(
             relative_rect=pygame.Rect(
@@ -38,15 +38,10 @@ class ActionForm:
         )
 
         #
-        # ─── SCROLLING CONTAINER ───────────────────────────────────────
+        # ─── SCROLL CONTAINER ──────────────────────────────────────────
         #
         scroll_y = padding + title_height + padding
-        scroll_height = (
-            panel_rect.height
-            - scroll_y
-            - button_height
-            - padding
-        )
+        scroll_height = panel_rect.height - scroll_y - button_height - padding
 
         self.scroll_container = pygame_gui.elements.UIScrollingContainer(
             relative_rect=pygame.Rect(
@@ -59,14 +54,11 @@ class ActionForm:
             container=self.panel
         )
 
-        #
-        # ─── CONTENT PANEL (SCROLLABLE) ────────────────────────────────
-        #
         self.content_panel = pygame_gui.elements.UIPanel(
             relative_rect=pygame.Rect(
                 0, 0,
                 self.scroll_container.get_relative_rect().width,
-                10  # resized after fields are added
+                10
             ),
             manager=self.manager,
             container=self.scroll_container
@@ -94,6 +86,11 @@ class ActionForm:
                     container=self.content_panel
                 )
 
+                self.fields[name] = {
+                    "spec": spec,
+                    "widget": widget
+                }
+
             elif field_type == "tag":
                 widget = pygame_gui.elements.UIDropDownMenu(
                     options_list=spec["options"],
@@ -103,40 +100,45 @@ class ActionForm:
                     container=self.content_panel
                 )
 
+                self.fields[name] = {
+                    "spec": spec,
+                    "widget": widget
+                }
+
             elif field_type == "increment":
-                widget = {
-                    -1: pygame_gui.elements.UIButton(
-                        pygame.Rect(140, y, 40, 25),
-                        "-1",
+                buttons = {}
+
+                for value, label, x in [
+                    (-1, "-1", 140),
+                    (0, "0", 185),
+                    (1, "+1", 230),
+                ]:
+                    btn = pygame_gui.elements.UIButton(
+                        pygame.Rect(x, y, 40, 25),
+                        label,
                         self.manager,
                         self.content_panel
-                    ),
-                    0: pygame_gui.elements.UIButton(
-                        pygame.Rect(185, y, 40, 25),
-                        "0",
-                        self.manager,
-                        self.content_panel
-                    ),
-                    1: pygame_gui.elements.UIButton(
-                        pygame.Rect(230, y, 40, 25),
-                        "+1",
-                        self.manager,
-                        self.content_panel
-                    ),
+                    )
+                    btn.increment_field = name
+                    btn.increment_value = value
+                    buttons[value] = btn
+
+                self.fields[name] = {
+                    "spec": spec,
+                    "widget": buttons,
+                    "value": 0
                 }
 
             else:
                 raise ValueError(f"Unknown field type {field_type}")
 
-            self.fields[name] = {"spec": spec, "widget": widget}
             y += 35
 
         #
-        # ─── FINALIZE SCROLLING AREA ───────────────────────────────────
+        # ─── FINALIZE SCROLLING ─────────────────────────────────────────
         #
         content_height = y + 10
 
-        self.content_panel.set_relative_position((0, 0))
         self.content_panel.set_dimensions((
             self.content_panel.get_relative_rect().width,
             content_height
@@ -148,7 +150,7 @@ class ActionForm:
         ))
 
         #
-        # ─── CONFIRM / CANCEL (FIXED) ──────────────────────────────────
+        # ─── CONFIRM / CANCEL ──────────────────────────────────────────
         #
         button_y = panel_rect.height - button_height
 
@@ -166,25 +168,32 @@ class ActionForm:
             self.panel
         )
 
+    def set_increment_value(self, field_name, value):
+        field = self.fields[field_name]
+        field["value"] = value
+
+        for btn_value, button in field["widget"].items():
+            if btn_value == value:
+                button.select()
+            else:
+                button.unselect()
+
     def collect_values(self):
         values = {}
 
         for name, field in self.fields.items():
-            widget = field["widget"]
             spec = field["spec"]
 
             if spec["type"] in ("string", "int"):
-                values[name] = widget.get_text()
+                values[name] = field["widget"].get_text()
 
             elif spec["type"] == "tag":
-                values[name] = widget.selected_option
+                values[name] = field["widget"].selected_option
 
             elif spec["type"] == "increment":
-                # Placeholder until increment state is implemented
-                values[name] = 0
+                values[name] = field["value"]
 
         return values
 
     def destroy(self):
         self.panel.kill()
-
